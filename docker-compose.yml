@@ -1,0 +1,26 @@
+version: '3.3'
+services:
+  nginx:
+    image: nginx:latest
+    volumes:
+      - ./config/nginx.conf:/etc/nginx/nginx.conf
+    ports:
+      - 3335:8042
+    depends_on:
+      - orthanc
+    restart: unless-stopped
+
+  orthanc:
+    # image: jodogne/orthanc-plugins:latest
+    image: osimis/orthanc:latest
+    hostname: orthanc
+    volumes:
+      - ./config/orthanc.json:/etc/orthanc/orthanc.json:ro
+      # - my-volume:/var/lib/orthanc/db/
+    ports:
+      - 3337:8042
+      - 4242:4242
+    restart: unless-stopped
+
+volumes:
+  my-volume:
